@@ -20,6 +20,7 @@
 
 - (void)initURLMapping
 {
+    //注册URL-VC键值对
     [[UMNavigationController config] setValuesForKeysWithDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:
                                                                      @"SFQuestionListViewController", @"sf://questionlist",
                                                                      @"SFQuestionDetailViewController", @"sf://questiondetail",
@@ -42,38 +43,65 @@
     }
 }
 
+//根据左侧侧滑栏栏目数量，初始化多个相应的导航视图控制器
 - (void)initNavigators
 {
+    /******************************************1******************************************/
+    //初始化最新问题列表导航视图控制器，指定URL
     self.newestNavigator = [[UMNavigationController alloc] initWithRootViewControllerURL:[[NSURL URLWithString:@"sf://questionlist"]
                                                                                           addParams:[NSDictionary dictionaryWithObjectsAndKeys:
                                                                                                      @"最新问题", @"title",
                                                                                                      @"listnewest", @"list",
                                                                                                      nil]]];
+    //初始化导航条左侧按钮
     UIButton *nNavBtn = [[UIButton alloc] initWithFrame:NAVIGATION_BAR_BTN_RECT];
+    
     [nNavBtn setBackgroundImage:[UIImage imageNamed:@"nav_menu.png"] forState:UIControlStateNormal];
     [nNavBtn setBackgroundImage:[UIImage imageNamed:@"nav_menu.png"] forState:UIControlStateHighlighted];
+    
     [nNavBtn addTarget:self.navigator action:@selector(slideButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    
     nNavBtn.showsTouchWhenHighlighted = YES;
+    
     UIBarButtonItem *nBtnItem = [[UIBarButtonItem alloc] initWithCustomView:nNavBtn];
+    
     self.newestNavigator.rootViewController.navigationItem.leftBarButtonItem = nBtnItem;
+    
+    
+    //设置导航栏背景和标题
     [self.newestNavigator.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bar_bg.png"] forBarMetrics:UIBarMetricsDefault];
     self.newestNavigator.title = @"最新问题";
     
+    /*****************************************2*******************************************/
+    
+    //热门问题列表
     self.hottestNavigator = [[UMNavigationController alloc] initWithRootViewControllerURL:[[NSURL URLWithString:@"sf://questionlist"]
                                                                                            addParams:[NSDictionary dictionaryWithObjectsAndKeys:
                                                                                                       @"热门问题", @"title",
                                                                                                       @"listhottest", @"list",
                                                                                                       nil]]];
+    
     UIButton *hNavBtn = [[UIButton alloc] initWithFrame:NAVIGATION_BAR_BTN_RECT];
+    
     [hNavBtn setBackgroundImage:[UIImage imageNamed:@"nav_menu.png"] forState:UIControlStateNormal];
     [hNavBtn setBackgroundImage:[UIImage imageNamed:@"nav_menu.png"] forState:UIControlStateHighlighted];
+    
     hNavBtn.showsTouchWhenHighlighted = YES;
+    
     [hNavBtn addTarget:self.navigator action:@selector(slideButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    
     UIBarButtonItem *hBtnItem = [[UIBarButtonItem alloc] initWithCustomView:hNavBtn];
+    
     self.hottestNavigator.rootViewController.navigationItem.leftBarButtonItem = hBtnItem;
+    
+    
     [self.hottestNavigator.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bar_bg.png"] forBarMetrics:UIBarMetricsDefault];
+    
     self.hottestNavigator.title = @"热门问题";
 
+    /******************************************3******************************************/
+    
+    //标记的问题列表
     self.followedQuestionsNavigator = [[UMNavigationController alloc] initWithRootViewControllerURL:[[NSURL URLWithString:@"sf://questionlist"]
                                                                                            addParams:[NSDictionary dictionaryWithObjectsAndKeys:
                                                                                                       @"标记的问题", @"title",
@@ -90,6 +118,9 @@
     [self.followedQuestionsNavigator.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bar_bg.png"] forBarMetrics:UIBarMetricsDefault];
     self.followedQuestionsNavigator.title = @"标记的问题";
     
+    /******************************************4******************************************/
+    
+    //个人资料列表
     self.userProfileNavigator = [[UMNavigationController alloc] initWithRootViewControllerURL:[[NSURL URLWithString:@"http://segmentfault.com/user/settings"]
                                                                                                 addParams:[NSDictionary dictionaryWithObjectsAndKeys:
                                                                                                            @"个人资料", @"title",
@@ -105,6 +136,9 @@
     [self.userProfileNavigator.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bar_bg.png"] forBarMetrics:UIBarMetricsDefault];
     self.userProfileNavigator.title = @"个人资料";
 
+    /******************************************5******************************************/
+    
+    //退出登录
     self.logoutNavigator = [[UMNavigationController alloc] initWithRootViewControllerURL:[[NSURL URLWithString:@"sf://login"]
                                                                                                addParams:[NSDictionary dictionaryWithObjectsAndKeys:
                                                                                                           @"退出登录", @"title",
@@ -120,6 +154,9 @@
     [self.logoutNavigator.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bar_bg.png"] forBarMetrics:UIBarMetricsDefault];
     self.logoutNavigator.title = @"退出登录";
 
+    /******************************************6******************************************/
+    
+    //登录
     self.loginNavigator = [[UMNavigationController alloc] initWithRootViewControllerURL:[[NSURL URLWithString:@"sf://login"]
                                                                                                     addParams:[NSDictionary dictionaryWithObjectsAndKeys:
                                                                                                                @"用户登录", @"title",
