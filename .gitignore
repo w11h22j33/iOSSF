@@ -13,3 +13,5 @@ External/GHUnit/*
 *.swp
 *.swo
 *.xcuserstate
+DerivedData/*
+Build/*
